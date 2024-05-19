@@ -9,28 +9,43 @@ pub struct Ticket {
 }
 
 impl Ticket {
-    pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 characters");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 characters");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
-
+    pub fn new(title: String, description: String, status: String) -> Ticket { 
+        Ticket::validate_emptyness("Title", &title); 
+        Ticket::validate_emptyness("Description", &description);
+        Ticket::validate_length("Title", &title);
+        Ticket::validate_length("Description", &description);
+        Ticket::validate_status(&status);
         Ticket {
             title,
             description,
             status,
         }
+    }
+    pub fn validate_emptyness(field:&str, value:&String) -> bool {
+        if value.is_empty() {
+            panic!("{} cannot be empty", field);
+        }
+        true
+    }
+    pub fn validate_length(field:&str, value:&String) -> bool {
+        if field == "Title" {
+            if value.len() > 50 {
+               panic!("Title cannot be longer than 50 characters"); 
+            }
+        } else if field == "Description" {
+            if value.len() > 500 {
+                panic!("Description cannot be longer than 500 characters"); 
+            }
+        } else {
+            panic!("Invalid field!!");
+        }
+        true
+    }
+    pub fn validate_status(value:&String) -> bool {
+        if value != "To-Do" && value != "In Progress" && value != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
+        true
     }
 
     pub fn title(&self) -> &String {
@@ -44,7 +59,23 @@ impl Ticket {
     pub fn status(&self) -> &String {
         &self.status
     }
+    pub fn set_title(&mut self, new_title:String) {
+        if Ticket::validate_emptyness("Title", &new_title) && Ticket::validate_length("Title", &new_title) {
+            self.title = new_title;
+        }  
+    }
+    pub fn set_description(&mut self, new_description:String) {
+        if Ticket::validate_emptyness("Description", &new_description) && Ticket::validate_length("Description", &new_description) {
+            self.description = new_description;
+        }
+    }
+    pub fn set_status(&mut self, new_status:String) {
+        if Ticket::validate_status(&new_status) {
+            self.status = new_status;
+        }
+    }
 }
+
 
 #[cfg(test)]
 mod tests {
