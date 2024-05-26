@@ -12,6 +12,49 @@
 // interested in learning more about it.
 // You don't have to though: it's perfectly okay to write three separate
 // implementations manually. Venture further only if you're curious.
+pub trait Power <RHS = Self> {
+    type Output;
+    fn power(self, rhs:RHS) -> Self::Output;
+}
+
+impl Power<u32> for u32 {
+    type Output = u32;
+    fn power(self, rhs:u32) -> Self::Output {
+        let mut res:u32 = 1;
+        let mut counter:u32 = rhs;
+        while counter > 0 {
+            res = res * self;
+            counter = counter -1;
+        }
+        res
+    }
+}
+
+impl Power<u16> for u32 {
+    type Output = u32;
+    fn power(self, rhs:u16) -> Self::Output {
+        let mut res:u32 = 1;
+        let mut counter:u16 = rhs;
+        while counter > 0 {
+            res = res * self;
+            counter = counter -1;
+        }
+        res
+    }
+}
+
+impl Power<&u32> for u32 {
+    type Output = u32;
+    fn power(self, rhs:&u32) -> Self::Output {
+        let mut res:u32 = 1;
+        let mut counter:u32 = *rhs;
+        while counter > 0 {
+            res = res * self;
+            counter = counter -1;
+        }
+        res
+    }
+}
 
 #[cfg(test)]
 mod tests {

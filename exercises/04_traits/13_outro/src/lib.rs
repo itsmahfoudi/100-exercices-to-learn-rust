@@ -7,4 +7,9 @@
 //   It should be possible to compare it with another `SaturatingU16` or a `u16`.
 //   It should be possible to print its debug representation.
 //
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub struct SaturatingU16 {
+    value:u16,
+}
+
 // Tests are located in the `tests` folder—pay attention to the visibility of your types and methods.
